@@ -101,6 +101,30 @@ end
 # ╔═╡ 8e3dc728-927e-11eb-2609-212b30036d55
 gw1_sorted_features = sortbycorrelation(gw1_mat, gw1_sorted)
 
+# ╔═╡ 52f92c04-92fe-11eb-1611-73cddd45e5ef
+md"""
+## Neural Network Model
+
+The neural network predicts the points haul: `pp_predicted` for a player at a gameweek `n`.
+
+To make this prediction the classifier model takes input categories:
+  - `stats_performance` -- the player's performance stats up to that gameweek
+  - `stats_fixture` -- the gameweek specific features
+
+These input features will always be considered to be _one gameweek behind_.
+If the gameweek is indexed as `n`, the input features are labelled `n-1` and will be used in the follwing way:
+
+```math
+\text{pp\_predicted}_{\ n}
+\longleftarrow
+\text{NN}\left[
+	(\text{stats\_performance},\ \text{stats\_fixture})_{\ n-1}
+\right] 
+```
+
+Both `stats_performance` and `stats_fixture` are comprised of many sub-features.
+"""
+
 # ╔═╡ Cell order:
 # ╠═6a5733b0-9258-11eb-1cb3-732a72a6ef6f
 # ╟─ac577590-9258-11eb-3064-0dfac1dbecf1
@@ -114,3 +138,4 @@ gw1_sorted_features = sortbycorrelation(gw1_mat, gw1_sorted)
 # ╠═67f8afee-929a-11eb-1db8-a9b5f9899449
 # ╠═67c7e9be-9262-11eb-3f3d-7902775cedab
 # ╠═8e3dc728-927e-11eb-2609-212b30036d55
+# ╟─52f92c04-92fe-11eb-1611-73cddd45e5ef

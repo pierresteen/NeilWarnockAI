@@ -4,15 +4,29 @@ Premier League analysis and FPL (Fanstasy Premier League) autonomous agent proje
 
 ## TODO:
 
-
+1. data pipelines and automated database update:
+	- in prototype -> static database
+		* data cleaning still necessary?
+		* formatting?
+		* feature engineering as part of data pre-processing? ( !◮ WARNING !◮ )
+			- gameweek player stats files aren't homologous in axis: `gw*.csv`
+			- the order ofthe players changes and possibly even the total group of players
+	- in operation -> automated retrieval and storage
+		* APIs?
+		* are vaastav's scripts useful?
+	- 
+2. player gameweek points haul predictor model
 
 ===
 
 ## Objectives:
 
-Build, train and test an autonomous agent whose primary goal is to maximise FPL points return over an entire season of FPL play.
+Build, train and test an autonomous agent whose primary goal is to maximise FPL points return over an entire season
+of FPL play.
 
-This should achievable by leveraging a large dataset of past gameweek player performances and scripts that allow a specific manager's season data to be downloaded and stored in `.csv` format (credit to [Vaastav Anand](https://github.com/vaastav) for this work.)
+This should achievable by leveraging a large dataset of past gameweek player performances and scripts that allow
+a specific manager's season data to be downloaded and stored in `.csv` format, credit to
+[Vaastav Anand](https://github.com/vaastav) for this work.
 
 ## Overview:
 
@@ -61,6 +75,7 @@ __For each gameweek, the following system will run:__
 		* does this need to be included in the _bin-packing_ search algorithm?
 		* _how do we assess when a token play is worth it?_
 	- __how to address double gameweeks?__
+	- __first gameweek__
 
 ## Implementation:
 
