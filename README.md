@@ -2,6 +2,12 @@
 
 Premier League analysis and FPL (Fanstasy Premier League) autonomous agent project.
 
+## TODO:
+
+
+
+===
+
 ## Objectives:
 
 Build, train and test an autonomous agent whose primary goal is to maximise FPL points return over an entire season of FPL play.

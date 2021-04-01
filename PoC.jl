@@ -111,6 +111,6 @@ gw1_sorted_features = sortbycorrelation(gw1_mat, gw1_sorted)
 # ╟─de38a0ca-928a-11eb-0994-d3e566c40381
 # ╠═2b2b410c-925f-11eb-24aa-afcf04826510
 # ╟─7db1e45e-929a-11eb-1c6d-53bcd4d8b1e4
-# ╟─67f8afee-929a-11eb-1db8-a9b5f9899449
+# ╠═67f8afee-929a-11eb-1db8-a9b5f9899449
 # ╠═67c7e9be-9262-11eb-3f3d-7902775cedab
 # ╠═8e3dc728-927e-11eb-2609-212b30036d55
