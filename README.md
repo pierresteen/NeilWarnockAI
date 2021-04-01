@@ -57,6 +57,7 @@ __For each gameweek, the following system will run:__
 		(the algorithm for deciding whether a transfer is made will involve further cost-benefit computation)
 3. edge case decisions
 	- __when to play tokens?__
+	[reference guide on token use](https://www.premierleague.com/news/790143)
 		* does this need to be included in the _bin-packing_ search algorithm?
 		* _how do we assess when a token play is worth it?_
 	- __how to address double gameweeks?__
