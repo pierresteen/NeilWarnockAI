@@ -20,7 +20,7 @@ end
 md"""
 # Player Gameweek Points Predictor
 
-__This is the first component of our FPL NeilWarnockAI system.__
+__This is the first component of our FPL *NeilWarnockAI* system.__
 
 This model should be able to predict a player's total _Fantasy League_ points haul for a single gameweek.
 
@@ -33,6 +33,16 @@ The *`NeilWarnockAI`* system will then use the `PlayerPointsPredictor` to predic
 md"""
 ## Data & Feature Engineering
 """
+
+# ╔═╡ 825a0948-928c-11eb-24c9-6775293f69cf
+"""
+	collect_stats()
+
+Sums and averages a player's stats over the season so that a good correlation analysis between features and points total can be performed.
+"""
+function collect_stats()
+	
+end
 
 # ╔═╡ 37b3c95a-925b-11eb-2562-437d30d936f1
 gw1_frame = CSV.File(open(read, "./data/2018-19/gws/gw1.csv", enc"LATIN1")) |> DataFrame
@@ -63,8 +73,19 @@ begin
 	heatmap(gw1_cor)
 end
 
+# ╔═╡ 7db1e45e-929a-11eb-1c6d-53bcd4d8b1e4
+md"↓ labels corresponding to axis on heatmap ↑"
+
+# ╔═╡ 67f8afee-929a-11eb-1db8-a9b5f9899449
+names(gw1_sorted)
+
 # ╔═╡ 67c7e9be-9262-11eb-3f3d-7902775cedab
-function sortbycorrelation(feature_matrix)
+"""
+	sortbycorrelation(feature_matrix, feature_dframe)
+
+Index feature dataframe `feature_dframe` according to which gameweek data features have a positive correlation to the player's points haul next gameweek.
+"""
+function sortbycorrelation(feature_matrix, feature_dframe)
 	correlation = cor(feature_matrix)
 
 	sorted_features = []
@@ -78,19 +99,18 @@ function sortbycorrelation(feature_matrix)
 end
 
 # ╔═╡ 8e3dc728-927e-11eb-2609-212b30036d55
-gw1_sorted_features = sortbycorrelation(gw1_mat)
-
-# ╔═╡ d63e40f0-928a-11eb-3184-1f3bddb95cdb
-
+gw1_sorted_features = sortbycorrelation(gw1_mat, gw1_sorted)
 
 # ╔═╡ Cell order:
 # ╠═6a5733b0-9258-11eb-1cb3-732a72a6ef6f
 # ╟─ac577590-9258-11eb-3064-0dfac1dbecf1
 # ╟─f1382ba4-9281-11eb-1245-a339d8a4b42d
+# ╠═825a0948-928c-11eb-24c9-6775293f69cf
 # ╠═37b3c95a-925b-11eb-2562-437d30d936f1
 # ╠═558d9dd6-925b-11eb-2850-4b491faa5441
 # ╟─de38a0ca-928a-11eb-0994-d3e566c40381
 # ╠═2b2b410c-925f-11eb-24aa-afcf04826510
+# ╟─7db1e45e-929a-11eb-1c6d-53bcd4d8b1e4
+# ╟─67f8afee-929a-11eb-1db8-a9b5f9899449
 # ╠═67c7e9be-9262-11eb-3f3d-7902775cedab
 # ╠═8e3dc728-927e-11eb-2609-212b30036d55
-# ╠═d63e40f0-928a-11eb-3184-1f3bddb95cdb
