@@ -17,7 +17,7 @@ Premier League analysis and FPL (Fanstasy Premier League) autonomous agent proje
 	- 
 2. player gameweek points haul predictor model
 
-===
+---
 
 ## Objectives:
 
