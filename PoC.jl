@@ -27,25 +27,104 @@ This model should be able to predict a player's total _Fantasy League_ points ha
 ## Overall Project Structure
 
 The *`NeilWarnockAI`* system will then use the `PlayerPointsPredictor` to predict the points haul for every single player in league. Next we will employ a [bin-packing optimisation algorithm](https://en.wikipedia.org/wiki/Bin_packing_problem) to choose a squad made up of 11 starting players and 4 benched players, the total cost of which should not exceed £100m as per the FPL rules.
+
+---
+
+> __This proof-of-concept will focus on the 2018/2019 season dataset, seeing as there were rather skewed odds due to the *loss of home advantage* in the 2019/2020 season end and 2020/2021 full season.__
+
 """
 
 # ╔═╡ f1382ba4-9281-11eb-1245-a339d8a4b42d
 md"""
-## Data & Feature Engineering
+## Data Processing & Feature Engineering
 """
+
+# ╔═╡ b5a32468-94d9-11eb-21dd-39a1df333ce5
+"""
+	getplayerid(string_in::String)
+
+Takes a string corresponding to a player's name and id mashed togther in the follwing format:
+
+	string_in = "firtsname_secondname_id"
+
+**We only need the `"id"`.**
+
+This function isolates the player identifier and returns it, parsing it to `Int` type.
+"""
+function getplayerid(string_in::String)::Int
+	let
+		chash = ""
+		cnums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+		for char in string_in
+			if in(char, cnums) == true
+				chash *=  char
+			else
+				continue
+			end
+		end
+		
+		return parse(Int, chash)
+	end
+end
 
 # ╔═╡ 825a0948-928c-11eb-24c9-6775293f69cf
 """
-	collect_stats()
+	collect_stats(DATA_PATH::String,  target_gw::Int, lookback::Int)
 
-Sums and averages a player's stats over the season so that a good correlation analysis between features and points total can be performed.
+Calculates the average performance of players, based on the player gameweek stats stored in the directory:
+
+```julia
+PLAYER_GWS_PATH = "./data/20**-**/gws/gw**.csv"
+```
+This function will average the stats over a number of previous gameweek statistics, the depth of which is determined by the `lookback::Int` parameter.
+
+It returns the average gameweek performance statistics as `pp_average::DataFrame`.
 """
-function collect_stats()
+function getframes(DATA_PATH::String,  target_gw::Int, lookback::Int)
+	# collect 'target gamweek' + the previous 'lookback' gameweeks
+	#	- function need that take single target file and converts to matrix form
+	# 	- convert player names using a hash table (Dict) to unique `Int` IDs
+	frames = []
+	for i in (target_gw - lookback):target_gw
+		file = CSV.File(open(read, DATA_PATH * "gw" * string(i) * ".csv" , enc"LATIN1"))
+		push!(frames, file)
+	end
+	
+	return frames
+end
+
+# ╔═╡ 64a440a2-94dd-11eb-2157-71ae7c817126
+function cleanframes(frames)
 	
 end
 
+# ╔═╡ 368f90fe-94dd-11eb-0681-13a581ed9466
+getframes("./data/2018-19/gws/", 5, 4)
+
+# ╔═╡ 030bcef6-94ad-11eb-1e80-afb461ad3ead
+"""
+	csvppparse(target::String)
+
+Reads and parses player performance gameweek data from:
+```julia
+target[.csv]
+```
+"""
+function csvppparse(target::String)
+	# read in perf. gw stats
+	gw_frame = CSV.File(open(read, target , enc"LATIN1"))
+	
+	p_keys = names(gw_frame) # extract data keys
+	
+	gw_parsed = gw_frame |> Tables.matrix
+	
+	
+	return gw_frame
+end
+
 # ╔═╡ 37b3c95a-925b-11eb-2562-437d30d936f1
-gw1_frame = CSV.File(open(read, "./data/2018-19/gws/gw1.csv", enc"LATIN1")) |> DataFrame
+gw1_frame = 
+CSV.File(open(read, "./data/2018-19/gws/gw1.csv", enc"LATIN1")) |> DataFrame
 
 # ╔═╡ 558d9dd6-925b-11eb-2850-4b491faa5441
 begin
@@ -135,7 +214,11 @@ Both `stats_performance` and `stats_fixture` are comprised of many sub-features.
 # ╠═6a5733b0-9258-11eb-1cb3-732a72a6ef6f
 # ╟─ac577590-9258-11eb-3064-0dfac1dbecf1
 # ╟─f1382ba4-9281-11eb-1245-a339d8a4b42d
+# ╠═b5a32468-94d9-11eb-21dd-39a1df333ce5
 # ╠═825a0948-928c-11eb-24c9-6775293f69cf
+# ╠═64a440a2-94dd-11eb-2157-71ae7c817126
+# ╠═368f90fe-94dd-11eb-0681-13a581ed9466
+# ╠═030bcef6-94ad-11eb-1e80-afb461ad3ead
 # ╠═37b3c95a-925b-11eb-2562-437d30d936f1
 # ╠═558d9dd6-925b-11eb-2850-4b491faa5441
 # ╟─de38a0ca-928a-11eb-0994-d3e566c40381
