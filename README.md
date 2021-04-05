@@ -1,6 +1,16 @@
 <img src="./assets/daddyNeil.png" height="250" align="left"></img>
 
-# NeilWarnockAI
+# ⚽️ NeilWarnockAI ⚽️
+
+🏆️ __Some of Neil's best quotes for the reader's enjoyment:__ 🏆
+
+🥇
+> When I pass away, I don't want clapping or a minute's silence, 
+> I want a minute's booing at Bristol City.
+
+🥈
+> 
+> 
 
 Premier League analysis and FPL (Fanstasy Premier League) autonomous agent project.
 
