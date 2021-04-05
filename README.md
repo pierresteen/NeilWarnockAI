@@ -21,9 +21,9 @@ Inspiring words from one of the truly great wordsmiths of our time.
 
 ---
 
-@Noah:
+__@Noah:__
 
-See `devog.md` for a more detailed description of the current approach.
+See `devlog.md` for a more detailed description of the current approach.
 
 ## TODO:
 
