@@ -4,6 +4,10 @@
 
 Premier League analysis and FPL (Fanstasy Premier League) autonomous agent project.
 
+---
+---
+---
+
 ## TODO:
 
 1. data pipelines and automated database update:
