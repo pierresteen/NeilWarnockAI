@@ -5,9 +5,9 @@
 Premier League analysis and FPL (Fanstasy Premier League) autonomous agent project, with the aim of running riot in
 the 2021/2022 FPL season.
 
-🥇🚀 Top 0.1% here we come!! 🚀🥇
+🥇🚀 Top 0.1% here we come! 🚀🥇
 
-🙌 Let's make Neil proud! 🙌
+🙌👑 Let's make Neil proud! 👑🙌
 
 ---
 
@@ -18,6 +18,12 @@ the 2021/2022 FPL season.
 > Matches don't come any bigger the FA cup quarter-finals.
 
 ## TODO:
+
+- [ ] 
+- [ ] 
+- [ ]
+- [ ]
+- [ ]
 
 1. data pipelines and automated database update:
 	- in prototype -> static database
@@ -112,8 +118,8 @@ More research needs to be done to better understand how this can be achieved.
 
 __Predictive Model:__
 
-The aim is to predict a player's future gameweek points haul based on input features that are unique to each player at
-each gameweek.
+The aim is to predict a player's future gameweek points haul based on input features that are unique to each player
+at each gameweek.
 
 So far the input data categories are:
 - past performance items:
