@@ -84,9 +84,9 @@ function getframes(DATA_PATH::String,  target_gw::Int, lookback::Int)
 	# collect 'target gamweek' + the previous 'lookback' gameweeks
 	#	- function need that take single target file and converts to matrix form
 	# 	- convert player names using a hash table (Dict) to unique `Int` IDs
-	frames = []
+	frames = Array{DataFrame, 1}()
 	for i in (target_gw - lookback):target_gw
-		file = CSV.File(open(read, DATA_PATH * "gw" * string(i) * ".csv" , enc"LATIN1"))
+		file = CSV.File(open(read, DATA_PATH * "gw" * string(i) * ".csv" , enc"LATIN1")) |> DataFrame
 		push!(frames, file)
 	end
 	
@@ -95,11 +95,23 @@ end
 
 # ╔═╡ 64a440a2-94dd-11eb-2157-71ae7c817126
 function cleanframes(frames)
-	
+	frame_ids = Array{Vector{Int64}, 1}()
+	for frame in frames
+		names = first(eachcol(frame))
+		ids = map(getplayerid, names)
+		push!(frame_ids, ids)
+	end
+	return frame_ids
 end
 
 # ╔═╡ 368f90fe-94dd-11eb-0681-13a581ed9466
-getframes("./data/2018-19/gws/", 5, 4)
+test_frames = getframes("./data/2018-19/gws/", 5, 4)
+
+# ╔═╡ a4f323de-94de-11eb-1bb8-97a7678f3f0a
+DataFrame.(cleanframes(test_frames))
+
+# ╔═╡ e9ca52b6-94de-11eb-2660-819ef1c6d29d
+first(eachrow(test_frames[1]))
 
 # ╔═╡ 030bcef6-94ad-11eb-1e80-afb461ad3ead
 """
@@ -113,11 +125,8 @@ target[.csv]
 function csvppparse(target::String)
 	# read in perf. gw stats
 	gw_frame = CSV.File(open(read, target , enc"LATIN1"))
-	
 	p_keys = names(gw_frame) # extract data keys
-	
 	gw_parsed = gw_frame |> Tables.matrix
-	
 	
 	return gw_frame
 end
@@ -217,7 +226,9 @@ Both `stats_performance` and `stats_fixture` are comprised of many sub-features.
 # ╠═b5a32468-94d9-11eb-21dd-39a1df333ce5
 # ╠═825a0948-928c-11eb-24c9-6775293f69cf
 # ╠═64a440a2-94dd-11eb-2157-71ae7c817126
+# ╠═a4f323de-94de-11eb-1bb8-97a7678f3f0a
 # ╠═368f90fe-94dd-11eb-0681-13a581ed9466
+# ╠═e9ca52b6-94de-11eb-2660-819ef1c6d29d
 # ╠═030bcef6-94ad-11eb-1e80-afb461ad3ead
 # ╠═37b3c95a-925b-11eb-2562-437d30d936f1
 # ╠═558d9dd6-925b-11eb-2850-4b491faa5441

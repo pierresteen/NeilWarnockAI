@@ -1,3 +1,5 @@
+<img src="./assets/daddyNeil.png" height="250" align="left"></img>
+
 # NeilWarnockAI
 
 Premier League analysis and FPL (Fanstasy Premier League) autonomous agent project.
