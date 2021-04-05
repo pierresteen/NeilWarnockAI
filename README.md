@@ -2,17 +2,17 @@
 
 # ⚽️ NeilWarnockAI ⚽️
 
+Premier League analysis and FPL (Fanstasy Premier League) autonomous agent project, with the aim of running riot in
+the 2021/2022 FPL season (top 0.1% here we come 🚀🥇).
+
+🙌 Let's make Mr. Warnock proud! 🙌
+
+---
+
 🏆️ __Some of Neil's best quotes for the reader's enjoyment:__ 🏆
 
-🥇
 > When I pass away, I don't want clapping or a minute's silence, 
 > I want a minute's booing at Bristol City.
-
-🥈
-> 
-> 
-
-Premier League analysis and FPL (Fanstasy Premier League) autonomous agent project.
 
 ## TODO:
 
