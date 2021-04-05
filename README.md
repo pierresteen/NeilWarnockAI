@@ -17,6 +17,8 @@ the 2021/2022 FPL season.
 
 > Matches don't come any bigger the FA cup quarter-finals.
 
+Inspiring words from one of the truly great wordsmiths of our time.
+
 ---
 
 ## TODO:
