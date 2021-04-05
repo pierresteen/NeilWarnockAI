@@ -7,9 +7,7 @@ the 2021/2022 FPL season.
 
 🥇🚀 Top 0.1% here we come!! 🚀🥇
 
-🙌 Let's make Mr. Warnock proud! 🙌
-
----
+🙌 Let's make Neil proud! 🙌
 
 ## 🏆️ Some of Neil's best quotes for the reader's enjoyment: 🏆
 
