@@ -21,6 +21,10 @@ Inspiring words from one of the truly great wordsmiths of our time.
 
 ---
 
+@Noah:
+
+See `devog.md` for a more detailed description of the current approach.
+
 ## TODO:
 
 - [x] Choose predictive strategy
