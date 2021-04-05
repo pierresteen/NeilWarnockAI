@@ -2,7 +2,7 @@
 
 # ⚽️📈 NeilWarnockAI 📈⚽️
 
-Premier League analysis and FPL (Fanstasy Premier League) autonomous agent project, with the aim of running riot in
+Premier League analysis and FPL (Fanstasy Premier League) autonomous agent project, with the aim of __running riot__ in
 the 2021/2022 FPL season.
 
 🥇🚀 Top 0.1% here we come! 🚀🥇
