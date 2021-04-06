@@ -47,6 +47,7 @@ See `devlog.md` for a more detailed description of the current approach.
 
 - [x] Choose predictive strategy
 - [x] Start on proof-of-concept (PoC.jl)
-- [ ] Autonomously updating gameweek data fetching
-- [ ] Filter incoming model-training and test-point data (indentify necessary features)
+- [x] Filter incoming model inputs
+- [ ] Extract model outputs for training and validation
 - [ ] Working player gameweek points prediction `pp_prediction`
+- [ ] Autonomously updating gameweek data fetching
