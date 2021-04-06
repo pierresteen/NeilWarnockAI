@@ -21,11 +21,13 @@ Inspiring words from one of the truly great wordsmiths of our time.
 
 ---
 
-## Issues and Core Problems:
+## Questions & Design Decisions:
 
-1. __Model Design question?__
+1. __Feature engineering approach__
 
-	Which of these 'feature engieering' design choices should we go with?
+	__QUESTION:__
+
+	Which of these 'feature engineering' design choices should we go with?
 
 	1. average a player's performance stats over the number of games he featured in the `scope`?
 	2. average a player's performance stats over the number of games in the `scope` for every player, regardless of whether the player is included in all the gameweek dataframes? 
