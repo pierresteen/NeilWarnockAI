@@ -150,16 +150,29 @@ function pastperformance(id_frames, opt=:total)
 	
 	for i in 1:length(unique_ids)
 		comp_matrix[i, 1] = unique_ids[i]
-		
+		count = 0
 		for j in 1:size(ids_matrix)[1]
 			if ids_matrix[j, 1] == unique_ids[i]
+				count += 1
 				comp_matrix[i, 2:end] += ids_matrix[j, 2:end]
 			end
 		end
+		comp_matrix[i, 2:end] = comp_matrix[i, 2:end] ./ count
 	end
 	
 	return comp_matrix
 end
+
+# ╔═╡ c4f53067-f641-4baf-9605-9788f8e1db75
+md"""
+__Design question?__
+
+Should we average a player's performance stats over the number of games he featured in the `lookback` scope?
+
+_OR_
+
+Should we average a player's performance stats over the number of games in the `lookback` scope for every player, regardless of whether the player is included in the other gameweek statistic dataframes? 
+"""
 
 # ╔═╡ 9233fa73-83c3-4906-97f2-9cb8ed4ab2cc
 begin
@@ -293,6 +306,7 @@ Both `stats_performance` and `stats_fixture` are comprised of many sub-features.
 # ╠═728494fd-1c1d-48e7-b3c5-f3ccd9e519c1
 # ╠═368f90fe-94dd-11eb-0681-13a581ed9466
 # ╠═e061b752-389b-494b-9908-d4c04b05f27a
+# ╟─c4f53067-f641-4baf-9605-9788f8e1db75
 # ╠═9233fa73-83c3-4906-97f2-9cb8ed4ab2cc
 # ╠═b9c6cf5e-8412-4976-8cc4-5137fac01ee3
 # ╠═030bcef6-94ad-11eb-1e80-afb461ad3ead

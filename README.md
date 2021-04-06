@@ -21,6 +21,16 @@ Inspiring words from one of the truly great wordsmiths of our time.
 
 ---
 
+## Issues and Core Problems:
+
+1. __Model Design question?__
+
+	Should we average a player's performance stats over the number of games he featured in the `lookback` scope?
+
+	_OR_
+
+	Should we average a player's performance stats over the number of games in the `lookback` scope for every player, regardless of whether the player is included in the other gameweek statistic dataframes? 
+
 __@Noah:__
 
 See `devlog.md` for a more detailed description of the current approach.
