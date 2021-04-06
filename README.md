@@ -25,11 +25,17 @@ Inspiring words from one of the truly great wordsmiths of our time.
 
 1. __Model Design question?__
 
-	Should we average a player's performance stats over the number of games he featured in the `lookback` scope?
+	Which of these 'feature engieering' design choices should we go with?
 
-	_OR_
+	1. average a player's performance stats over the number of games he featured in the `scope`?
+	2. average a player's performance stats over the number of games in the `scope` for every player, regardless of whether the player is included in all the gameweek dataframes? 
 
-	Should we average a player's performance stats over the number of games in the `lookback` scope for every player, regardless of whether the player is included in the other gameweek statistic dataframes? 
+	__ANSWER:__
+
+	An option was included in the data fetching and processing function to determine this behaviour:
+	- `opt = :average` -> the player's average stats are calculated over the entire `scope`.
+	- `opt = :weightedaverage` -> the player's stats are averaged only over the gameweeks they feature in.
+	- `opt = :total` -> no average is taken, instead the stats are simply summed over the `scope` gameweek range.
 
 __@Noah:__
 
