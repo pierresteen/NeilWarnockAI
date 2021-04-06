@@ -34,9 +34,14 @@ The *`NeilWarnockAI`* system will then use the `PlayerPointsPredictor` to predic
 
 """
 
+# ╔═╡ ebf77642-299c-480b-a079-271a8c5ad0fa
+md"""
+## Data Processing Testing
+"""
+
 # ╔═╡ f1382ba4-9281-11eb-1245-a339d8a4b42d
 md"""
-## Data Processing & Feature Engineering
+## Data Processing Functions
 """
 
 # ╔═╡ b5a32468-94d9-11eb-21dd-39a1df333ce5
@@ -69,21 +74,21 @@ end
 
 # ╔═╡ 825a0948-928c-11eb-24c9-6775293f69cf
 """
-	collect_stats(DATA_PATH::String,  target_gw::Int, lookback::Int)
+	collect_stats(DATA_PATH::String,  target_gw::Int, scope::Int)
 
 Calculates the average performance of players, based on the player gameweek stats stored in the directory:
 
 ```julia
 PLAYER_GWS_PATH = "./data/20**-**/gws/gw**.csv"
 ```
-This function will average the stats over a number of previous gameweek statistics, the depth of which is determined by the `lookback::Int` parameter.
+This function will average the stats over a number of previous gameweek statistics, the depth of which is determined by the `scope::Int` parameter.
 
 It returns the average gameweek performance statistics as `pp_average::DataFrame`.
 """
-function getframes(DATA_PATH::String,  target_gw::Int, lookback::Int)
+function getframes(DATA_PATH::String,  target_gw::Int, scope::Int)
 	frames = Array{DataFrame, 1}()
 	
-	for i in (target_gw - lookback):target_gw
+	for i in (target_gw - scope):target_gw
 		file = CSV.File(
 			open(
 				read,
@@ -104,6 +109,9 @@ function getframes(DATA_PATH::String,  target_gw::Int, lookback::Int)
 	
 	return frames
 end
+
+# ╔═╡ 368f90fe-94dd-11eb-0681-13a581ed9466
+test_frames = getframes("./data/2018-19/gws/", 5, 4);
 
 # ╔═╡ 64a440a2-94dd-11eb-2157-71ae7c817126
 """
@@ -155,16 +163,36 @@ function idcleanframes(frames)
 	return clean_output
 end
 
-# ╔═╡ 368f90fe-94dd-11eb-0681-13a581ed9466
-test_frames = getframes("./data/2018-19/gws/", 5, 4)
-
 # ╔═╡ a4f323de-94de-11eb-1bb8-97a7678f3f0a
-clean_frames = idcleanframes(test_frames)
-
-# ╔═╡ 728494fd-1c1d-48e7-b3c5-f3ccd9e519c1
-typeof(clean_frames)
+clean_frames = idcleanframes(test_frames);
 
 # ╔═╡ e061b752-389b-494b-9908-d4c04b05f27a
+"""
+	pastperformance(id_frames, frame_count, opt=:weightedaverage)
+	pastperformance(id_frames, frame_count, opt=:average)
+	pastperformance(id_frames, frame_count, opt=:total)
+
+__Takes:__
+
+`id_frames::DataFrame`, an array of type `Any` and length `frame_count` in reverse-chronological order of past gameweek player performances and processes them according to the `opt` parameter.
+
+__Returns:__
+```julia
+opt = :weightedaverage
+```
+Computes a matrix of combined `id_frames` with each player's stats averaged over the __gameweeks they feature in__ over the target range.
+
+```julia
+opt = :average
+```
+Computes a matrix of combined `id_frames` with each player's stats averaged over the __entire__ target range.
+
+```julia
+opt = :total
+```
+Computes a matrix of combined `id_frames` with each player's stats __summed__ over the target range.
+
+"""
 function pastperformance(id_frames, frame_count, opt=:average)
 	id_matrices = vcat(id_frames...)	# stack all gameweek dataframes
 	sort!(id_matrices, :id)				# sort by player :id
@@ -172,47 +200,114 @@ function pastperformance(id_frames, frame_count, opt=:average)
 
 	# create zero matrix for comp. storage and convert stacked frames to matrix
 	ids_matrix = id_matrices |> Tables.matrix
-	comp_matrix = zeros(Float64, length(unique_ids), size(id_matrices)[2])
+	cmp_matrix = zeros(
+		Float64,
+		length(unique_ids),
+		size(id_matrices)[2]
+	)
 	
 	for i in 1:length(unique_ids)
-		comp_matrix[i, 1] = unique_ids[i]
+		cmp_matrix[i, 1] = unique_ids[i]
 		count = 0
+	
 		for j in 1:size(ids_matrix)[1]
 			if ids_matrix[j, 1] == unique_ids[i]
 				count += 1
-				comp_matrix[i, 2:end] += ids_matrix[j, 2:end]
+				cmp_matrix[i, 2:end] += ids_matrix[j, 2:end]
 			end
 		end
+	
 		if opt == :weightedaverage
-			comp_matrix[i, 2:end] = comp_matrix[i, 2:end] ./ count
+			cmp_matrix[i, 2:end] = cop_matrix[i, 2:end] ./ count
 		end
 	end
+	
 	if opt == :average
-		comp_matrix[:, 2:end] = comp_matrix[:, 2:end] ./ frame_count
+		cmp_matrix[:, 2:end] = cmp_matrix[:, 2:end] ./ frame_count
 	end
 	
-	return comp_matrix
+	return cmp_matrix
 end
 
-# ╔═╡ c4f53067-f641-4baf-9605-9788f8e1db75
+# ╔═╡ b9c6cf5e-8412-4976-8cc4-5137fac01ee3
+test_matrix = pastperformance(clean_frames, 5, :average)
+
+# ╔═╡ 4175c783-792c-4ef9-9804-2ce22d92e9be
+function gwtomatrix(DATA_PATH, target_gw, scope, opt=:average)
+	# fetch dataframe array and clean to :id indexer form
+	gw_frames = getframes(
+		DATA_PATH,
+		target_gw,
+		scope
+	) |> idcleanframes 
+	
+	# convert frames to combined & averaged matrix form
+	gw_matrix = pastperformance(
+		gw_frames,
+		(scope + 1), 
+		opt
+	)
+	
+	return gw_matrix
+end
+
+# ╔═╡ 9bb35d3e-7868-4ebc-b9bb-d14e28132a9d
+size(gwtomatrix("./data/2018-19/gws/", 10, 4))
+
+# ╔═╡ 8b12751d-2b3e-45a4-8934-0a586af5da18
+function databasebuild(GWS_PATH, total_gws, scope, opt=:average)
+	# take:
+	#	stem PATH for season gw files
+	#	number of previous gw stats to combine
+	season_data = []
+	
+	for i in 1:total_gws
+		if (scope + 1) > i
+			edge_scope = i - 1
+		else
+			edge_scope = scope
+		end
+			
+		gw_data = gwtomatrix(
+			GWS_PATH,
+			i,
+			edge_scope,
+			opt
+		)
+		
+		push!(season_data, gw_data)
+	end
+	
+	return vcat(season_data...)
+end
+
+# ╔═╡ a219f3f8-a0f5-4fee-8404-83a48e666ec5
+season_player_performance = databasebuild("./data/2018-19/gws/", 38, 5, :average)
+
+# ╔═╡ 913b9fbb-5619-4403-9423-44681587c7ea
+length(unique(season_player_performance[:, 1]))
+
+# ╔═╡ ee1b14e9-c458-4703-8479-74477af1b02f
 md"""
-__Design question?__
+### Training Data
 
-Should we average a player's performance stats over the number of games he featured in the `lookback` scope?
+The variable `season_player_performance` represents the entire known model inputs for the `2018-19` season.
 
-_OR_
+---
 
-Should we average a player's performance stats over the number of games in the `lookback` scope for every player, regardless of whether the player is included in the other gameweek statistic dataframes? 
+__Remains to be done:__
+
+Find a way to extract the next gameweek's `:total_points` field for each player at each `target_gw`.
+
 """
 
-# ╔═╡ b9c6cf5e-8412-4976-8cc4-5137fac01ee3
-xx = pastperformance(clean_frames, 5, :average)
-
-# ╔═╡ 1ef2af7c-6673-4ce6-895f-8309cf7fd7f8
-
+# ╔═╡ 2de8f8bc-690e-4ec6-b516-d7e8cdeab38b
+md"""
+## Feature Engineering
+"""
 
 # ╔═╡ 37b3c95a-925b-11eb-2562-437d30d936f1
-gw1_frame = CSV.File(open(read, "./data/2018-19/gws/gw1.csv", enc"LATIN1")) |> DataFrame
+gw1_frame = CSV.File(open(read, "./data/2018-19/gws/gw1.csv", enc"LATIN1")) |> DataFrame;
 
 # ╔═╡ 558d9dd6-925b-11eb-2850-4b491faa5441
 begin
@@ -301,17 +396,22 @@ Both `stats_performance` and `stats_fixture` are comprised of many sub-features.
 # ╔═╡ Cell order:
 # ╠═6a5733b0-9258-11eb-1cb3-732a72a6ef6f
 # ╟─ac577590-9258-11eb-3064-0dfac1dbecf1
+# ╟─ebf77642-299c-480b-a079-271a8c5ad0fa
+# ╠═a4f323de-94de-11eb-1bb8-97a7678f3f0a
+# ╠═368f90fe-94dd-11eb-0681-13a581ed9466
+# ╠═b9c6cf5e-8412-4976-8cc4-5137fac01ee3
 # ╟─f1382ba4-9281-11eb-1245-a339d8a4b42d
 # ╠═b5a32468-94d9-11eb-21dd-39a1df333ce5
 # ╠═825a0948-928c-11eb-24c9-6775293f69cf
 # ╠═64a440a2-94dd-11eb-2157-71ae7c817126
-# ╠═a4f323de-94de-11eb-1bb8-97a7678f3f0a
-# ╠═728494fd-1c1d-48e7-b3c5-f3ccd9e519c1
-# ╠═368f90fe-94dd-11eb-0681-13a581ed9466
 # ╠═e061b752-389b-494b-9908-d4c04b05f27a
-# ╟─c4f53067-f641-4baf-9605-9788f8e1db75
-# ╠═b9c6cf5e-8412-4976-8cc4-5137fac01ee3
-# ╟─1ef2af7c-6673-4ce6-895f-8309cf7fd7f8
+# ╠═4175c783-792c-4ef9-9804-2ce22d92e9be
+# ╠═9bb35d3e-7868-4ebc-b9bb-d14e28132a9d
+# ╠═8b12751d-2b3e-45a4-8934-0a586af5da18
+# ╠═a219f3f8-a0f5-4fee-8404-83a48e666ec5
+# ╠═913b9fbb-5619-4403-9423-44681587c7ea
+# ╟─ee1b14e9-c458-4703-8479-74477af1b02f
+# ╟─2de8f8bc-690e-4ec6-b516-d7e8cdeab38b
 # ╠═37b3c95a-925b-11eb-2562-437d30d936f1
 # ╠═558d9dd6-925b-11eb-2850-4b491faa5441
 # ╟─de38a0ca-928a-11eb-0994-d3e566c40381
