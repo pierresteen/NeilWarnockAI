@@ -81,15 +81,24 @@ This function will average the stats over a number of previous gameweek statisti
 It returns the average gameweek performance statistics as `pp_average::DataFrame`.
 """
 function getframes(DATA_PATH::String,  target_gw::Int, lookback::Int)
-	# collect 'target gamweek' + the previous 'lookback' gameweeks
-	#	- function need that take single target file and converts to matrix form
-	# 	- convert player names using a hash table (Dict) to unique `Int` IDs
 	frames = Array{DataFrame, 1}()
+	
 	for i in (target_gw - lookback):target_gw
-		file = CSV.File(open(read, DATA_PATH * "gw" * string(i) * ".csv" , enc"LATIN1")) |> DataFrame
-		push!(frames, select(file, Not([:kickoff_time,
-										:kickoff_time_formatted,
-										:total_points]))
+		file = CSV.File(
+			open(
+				read,
+				DATA_PATH * "gw" * string(i) * ".csv",
+				enc"LATIN1"
+			)
+		) |> DataFrame
+		push!(
+			frames,
+			select(
+				file,
+				Not(
+					[:kickoff_time, :kickoff_time_formatted, :total_points]
+				)
+			)
 		)
 	end
 	
@@ -116,14 +125,31 @@ function idcleanframes(frames)
 	clean_output = []
 	
 	for frame in frames
-		frame_names = first(eachcol(frame))
-		
-		array_ids = map(getplayerid, frame_names)
-		frame_ids = DataFrame(:id => array_ids)
-		
-		frame_data = select(frame, Not(:name))
-		
-		push!(clean_output, sort!(hcat(frame_ids, frame_data, makeunique = true), :id))
+		frame_names = first(
+			eachcol(frame)
+		)
+		array_ids = map(
+			getplayerid,
+			frame_names
+		)
+		frame_ids = DataFrame(
+			:id => array_ids
+		)
+		frame_dat = select(
+			frame,
+			Not(:name)
+		)
+		push!(
+			clean_output,
+			sort!(
+				hcat(
+					frame_ids,
+					frame_dat,
+					makeunique = true
+				),
+				:id
+			)
+		)
 	end
 	
 	return clean_output
@@ -139,7 +165,7 @@ clean_frames = idcleanframes(test_frames)
 typeof(clean_frames)
 
 # ╔═╡ e061b752-389b-494b-9908-d4c04b05f27a
-function pastperformance(id_frames, opt=:total)
+function pastperformance(id_frames, frame_count, opt=:average)
 	id_matrices = vcat(id_frames...)	# stack all gameweek dataframes
 	sort!(id_matrices, :id)				# sort by player :id
 	unique_ids = unique(id_matrices[!, :id]) # extract array of unique player :id
@@ -157,7 +183,12 @@ function pastperformance(id_frames, opt=:total)
 				comp_matrix[i, 2:end] += ids_matrix[j, 2:end]
 			end
 		end
-		comp_matrix[i, 2:end] = comp_matrix[i, 2:end] ./ count
+		if opt == :weightedaverage
+			comp_matrix[i, 2:end] = comp_matrix[i, 2:end] ./ count
+		end
+	end
+	if opt == :average
+		comp_matrix[:, 2:end] = comp_matrix[:, 2:end] ./ frame_count
 	end
 	
 	return comp_matrix
@@ -174,42 +205,14 @@ _OR_
 Should we average a player's performance stats over the number of games in the `lookback` scope for every player, regardless of whether the player is included in the other gameweek statistic dataframes? 
 """
 
-# ╔═╡ 9233fa73-83c3-4906-97f2-9cb8ed4ab2cc
-begin
-	tt = clean_frames[1] |> Tables.matrix
-	tt[:, 1]
-end
-
 # ╔═╡ b9c6cf5e-8412-4976-8cc4-5137fac01ee3
-xx = pastperformance(clean_frames)
-
-# ╔═╡ 030bcef6-94ad-11eb-1e80-afb461ad3ead
-"""
-	csvppparse(target::String)
-
-Reads and parses player performance gameweek data from:
-```julia
-target[.csv]
-```
-"""
-function csvppparse(target::String)
-	# read in perf. gw stats
-	gw_frame = CSV.File(open(read, target , enc"LATIN1"))
-	p_keys = names(gw_frame) # extract data keys
-	gw_parsed = gw_frame |> Tables.matrix
-	
-	return gw_frame
-end
-
-# ╔═╡ 4c606e2e-34fd-4411-bb9a-e9f8c902bb6e
-
+xx = pastperformance(clean_frames, 5, :average)
 
 # ╔═╡ 1ef2af7c-6673-4ce6-895f-8309cf7fd7f8
 
 
 # ╔═╡ 37b3c95a-925b-11eb-2562-437d30d936f1
-gw1_frame = 
-CSV.File(open(read, "./data/2018-19/gws/gw1.csv", enc"LATIN1")) |> DataFrame
+gw1_frame = CSV.File(open(read, "./data/2018-19/gws/gw1.csv", enc"LATIN1")) |> DataFrame
 
 # ╔═╡ 558d9dd6-925b-11eb-2850-4b491faa5441
 begin
@@ -307,10 +310,7 @@ Both `stats_performance` and `stats_fixture` are comprised of many sub-features.
 # ╠═368f90fe-94dd-11eb-0681-13a581ed9466
 # ╠═e061b752-389b-494b-9908-d4c04b05f27a
 # ╟─c4f53067-f641-4baf-9605-9788f8e1db75
-# ╠═9233fa73-83c3-4906-97f2-9cb8ed4ab2cc
 # ╠═b9c6cf5e-8412-4976-8cc4-5137fac01ee3
-# ╠═030bcef6-94ad-11eb-1e80-afb461ad3ead
-# ╟─4c606e2e-34fd-4411-bb9a-e9f8c902bb6e
 # ╟─1ef2af7c-6673-4ce6-895f-8309cf7fd7f8
 # ╠═37b3c95a-925b-11eb-2562-437d30d936f1
 # ╠═558d9dd6-925b-11eb-2850-4b491faa5441
