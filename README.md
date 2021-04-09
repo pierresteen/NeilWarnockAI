@@ -1,4 +1,4 @@
-<img src="./assets/daddyNeil.png" height="250" align="left"></img>
+<img src="./assets/NeilAI.png" height="250" align="left"></img>
 
 # ⚽️ NeilWarnockAI ⚽️
 
