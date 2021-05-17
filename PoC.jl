@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.14.1
+# v0.14.3
 
 using Markdown
 using InteractiveUtils
@@ -211,9 +211,9 @@ Computes a matrix of combined `id_frames` with each player's stats __summed__ ov
 function pastperformance(id_frames, frame_count, opt=:average)
 	id_matrices = vcat(id_frames...)	# stack all gameweek dataframes
 	sort!(id_matrices, :id)				# sort by player :id
-	unique_ids = unique(id_matrices[!, :id]) # extract array of unique player :id
+	unique_ids = unique(id_matrices[!, :id])	# extract array of unique player :id
+	ids_matrix = id_matrices |> Tables.matrix 	# convert stacked frames to matrix
 
-	ids_matrix = id_matrices |> Tables.matrix # convert stacked frames to matrix
 	# create zero matrix for computed average stats storage
 	cmp_matrix = zeros(
 		Float64,
@@ -255,6 +255,7 @@ function gwtomatrix(DATA_PATH, target_gw, scope, opt=:average)
 		target_gw,
 		scope
 		) |> idcleanframes
+	
 	# convert frames to combined & averaged matrix form
 	gw_matrix = pastperformance(
 		gw_frames,
@@ -396,9 +397,6 @@ Both `stats_performance` and `stats_fixture` are comprised of many sub-features.
 Following __*Flux.jl*__ [tutorial](https://towardsdatascience.com/deep-learning-with-julia-flux-jl-story-7544c99728ca) from Medium.
 """
 
-# ╔═╡ 195de60c-95d0-4ba2-85a6-355e282fcff6
-
-
 # ╔═╡ Cell order:
 # ╠═6a5733b0-9258-11eb-1cb3-732a72a6ef6f
 # ╟─ac577590-9258-11eb-3064-0dfac1dbecf1
@@ -423,4 +421,3 @@ Following __*Flux.jl*__ [tutorial](https://towardsdatascience.com/deep-learning-
 # ╟─52b5241c-9067-4a5e-8bd2-ba718f1b9f9b
 # ╟─52f92c04-92fe-11eb-1611-73cddd45e5ef
 # ╠═4addda98-9f2f-4c72-907c-5c023ca4d9a3
-# ╠═195de60c-95d0-4ba2-85a6-355e282fcff6
