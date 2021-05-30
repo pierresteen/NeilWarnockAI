@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.14.3
+# v0.14.7
 
 using Markdown
 using InteractiveUtils
@@ -70,7 +70,7 @@ function getplayerid(string_in::String)::Int
 		
 		for char in string_in
 			if in(char, cnums) == true
-				chash *=  char
+				chash *= char
 			else
 				continue
 			end
