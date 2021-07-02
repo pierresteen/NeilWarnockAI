@@ -1,0 +1,11 @@
+StringEncodings
+Statistics
+DataFrames
+PlutoUI
+Plots
+CSV
+
+Flux
+Flux: Data.DataLoader
+Flux: onehotbatch, onecold, crossentropy, flatten
+Flux: @epochs
