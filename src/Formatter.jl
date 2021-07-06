@@ -5,13 +5,8 @@ Dependencies:
 	using DataFrames
 =#
 
-# module Formatter
-# export ioseparate
-
-# using DataFrames
 
 include("./Extractor.jl")
-using .Extractor
 
 function ioseparate(data_path, player_name)
 	player_data = extractplayerdf(data_path, player_name, "/gw.csv")
@@ -24,5 +19,3 @@ function ioseparate(data_path, player_name)
 
 	return (total_inputs, total_points)
 end
-
-# end
