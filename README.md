@@ -12,7 +12,7 @@ Working with modern statistical learning techniques to "solve" the game of [*Fan
 
 ### Prediction
 
-The first stage, that of prediction, is split into the following components...
+**See `predictor.jl` for a thourough functionality description.**
 
 Layer 1:
 ```
