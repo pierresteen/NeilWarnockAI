@@ -1,10 +1,8 @@
-# Neil-Warnock AI (nwai v2)
+# Neil-Warnock AI
 
 <img src="./assets/misc/NeilAI.png" height="300"></img>
 
 Working with modern statistical learning techniques to "solve" the game of [*Fantasy Premier League*](https://fantasy.premierleague.com).
-
-**Small chunks!!!**
 
 ## Methodology
 
@@ -12,7 +10,7 @@ Working with modern statistical learning techniques to "solve" the game of [*Fan
 
 ### Prediction
 
-**See `predictor.jl` for a thourough functionality description.**
+**See `predictor.jl` for a thorough functionality description.**
 
 Layer 1:
 ```
