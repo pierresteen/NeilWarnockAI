@@ -1,6 +1,6 @@
 # Neil-Warnock AI (nwai v2)
 
-<img src="./assets/misc/NeilAI.png" height="250"></img>
+<img src="./assets/misc/NeilAI.png" height="300"></img>
 
 Working with modern statistical learning techniques to "solve" the game of [*Fantasy Premier League*](https://fantasy.premierleague.com).
 
@@ -46,10 +46,10 @@ Using data from the [football-data](https://www.football-data.co.uk/) database s
 #### Layer 2 detailed description
 
 
+
 ### Optimisation
 
 Having predicted the gameweek points haul for the entire cohort of players (or those within a reasonable expected accuracy window)*, we now turn to choosing which of the players to use to fill our **15** available spaces.
-
 
 ## Investigate potential α
 
@@ -57,3 +57,4 @@ Having predicted the gameweek points haul for the entire cohort of players (or t
 	- include this as a weighted parameter
 - use betting odds data to tune scoreline prediction
 	- build api to fetch data and update weekly?
+

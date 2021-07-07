@@ -38,8 +38,8 @@
 # This process takes places in a different sub-routine called: `OPTIMISER`,
 # which requires the generated results from PREDICTOR to run.
 
-include("dataExtractor.jl")
-include("dataFormatter.jl")
+include("pipeline/dataExtractor.jl")
+include("pipeline/dataFormatter.jl")
 
 # main script
 
