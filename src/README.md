@@ -1,11 +1,11 @@
 # Main system description
 
-## predictor.jl
+## `predictor.jl`
 
 Sub-system of NeilWaronckAI which aims to make predictions about fixture
 scorelines, individual player points hauls and more...
 
-### functionality
+### Functionality
 
 At gameweek\[i\] the following 'system' should run once executing the
 following tasks in order:
@@ -39,3 +39,62 @@ Once this entire process has been completed, the next stage, which is
 the optimisation of the team selection begins.
 This process takes places in a different sub-routine called: `OPTIMISER`,
 which requires the generated results from PREDICTOR to run.
+
+### Data Structure
+
+To predict the outcome of a fixture e.g. `(HT, AT) = (:Arsenal, :Chelsea)`, we need to first shape the data we have fetched from [football-data](www.football-data.co.uk) into a form which can be used for training a model.
+This means we will also need to decide which features to train the model(s) on.
+
+#### Bookmaker's Odds
+
+The main source of predictive data will be the bookmakers odds, accumulated from varying sources and describing the odds on specific outcomes.
+
+For example, from Bet365, we have the following odds data;
+```
+B365H = Bet365 home win odds
+B365D = Bet365 draw odds
+B365A = Bet365 away win odds
+```
+but also;
+```
+B365>2.5 = Bet365 over 2.5 goals
+B365<2.5 = Bet365 under 2.5 goals
+```
+
+The first set of odds simply represents the bookmaker's analysis of which team will likely be the victors, whereas the second set of odds are the bookmaker's analysis of how likely an event `X` -- in this case over/under 2.5 total goals being scored -- is to happen.
+
+**Bookmaker's odds are a key value to our prediction, not only because it puts the some of the computational burden in their court, but also because they are released before a match.**
+
+#### Generated Features
+
+Using historic match statistics;
+
+**Match Statistics** (where available)
+- Attendance = Crowd Attendance
+- Referee = Match Referee
+- HS = Home Team Shots
+- AS = Away Team Shots
+- HST = Home Team Shots on Target
+- AST = Away Team Shots on Target
+- HHW = Home Team Hit Woodwork
+- AHW = Away Team Hit Woodwork
+- HC = Home Team Corners
+- AC = Away Team Corners
+- HF = Home Team Fouls Committed
+- AF = Away Team Fouls Committed
+- HFKC = Home Team Free Kicks Conceded
+- AFKC = Away Team Free Kicks Conceded
+- HO = Home Team Offsides
+- AO = Away Team Offsides
+- HY = Home Team Yellow Cards
+- AY = Away Team Yellow Cards
+- HR = Home Team Red Cards
+- AR = Away Team Red Cards
+- HBP = Home Team Bookings Points (10 = yellow, 25 = red)
+- ABP = Away Team Bookings Points (10 = yellow, 25 = red)
+
+we can generate 'past statistics' from this data.
+
+
+
+

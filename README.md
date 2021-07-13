@@ -6,7 +6,13 @@ Working with modern statistical learning techniques to "solve" the game of [*Fan
 
 ## Methodology
 
-**The approach used can be resumed as a two-layer prediction system feeding an constrained optimiser.**
+The approach used can be resumed as a two-layer prediction system feeding an constrained optimiser.
+
+**I cannot emphasize this more strongly - USE ONLY NORMALISED PERFORMANCE METRICS!**
+
+This will allow us to treat edge cases where there is not enough data about a team's, player's or manager's past performance.
+This is problem that is especially poignant in football; players can be transfered from abroad, teams can be promoted from lower leagues, posing a challenge to our data-hungry classifier algorithms.
+However; if we treat every performance metric as a distribution, we are able to fill in the blanks and guess that an entity's missing metric will satisfy the average, this plugs the hole in our predictive raft (and there will be **lots** of holes to plug in future also).
 
 ### Prediction
 
@@ -55,4 +61,4 @@ Having predicted the gameweek points haul for the entire cohort of players (or t
 	- include this as a weighted parameter
 - use betting odds data to tune scoreline prediction
 	- build api to fetch data and update weekly?
-
+- [were in *lundun* aren't weh?](https://youtu.be/Xd6gmlXPU48)
