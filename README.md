@@ -1,6 +1,6 @@
 # Neil-Warnock AI
 
-<img src="./assets/misc/NeilAI.png" height="300"></img>
+[<img src="./assets/misc/NeilAI.png" height="300"></img>](https://youtu.be/Xd6gmlXPU48)
 
 Working with modern statistical learning techniques to "solve" the game of [*Fantasy Premier League*](https://fantasy.premierleague.com).
 
