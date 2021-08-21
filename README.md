@@ -8,7 +8,7 @@ Working with modern statistical learning techniques to "solve" the game of [*Fan
 
 The approach used can be resumed as a two-layer prediction system feeding an constrained optimiser.
 
-**I cannot emphasize this more strongly - USE ONLY NORMALISED PERFORMANCE METRICS!**
+**USE ONLY NORMALISED PERFORMANCE METRICS!**
 
 This will allow us to treat edge cases where there is not enough data about a team's, player's or manager's past performance.
 This is problem that is especially poignant in football; players can be transfered from abroad, teams can be promoted from lower leagues, posing a challenge to our data-hungry classifier algorithms.
