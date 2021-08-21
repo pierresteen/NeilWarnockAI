@@ -1,4 +1,4 @@
-# Fantasy Premier League -- Data Mining
+# Fantasy Premier League - Data Mining
 
 Mining data from about FPL managers, players performances and general game information will require navigating the official API.
 It will also require web-scraping the offical FPL website for data not available via the public API, i.e. manager team data ([see](https://github.com/zceepst/NeilWarnockAI/blob/master/src/mining/README.md#web-scraping))
