@@ -1,6 +1,9 @@
 # Fantasy Premier League -- Data Mining
 
-Mining data from about fpl managers, players performances and general game information will require navigating the official API.
+Mining data from about FPL managers, players performances and general game information will require navigating the official API.
+It will also require web-scraping the offical FPL website for data not available via the public API, i.e. manager team data [(see)](# Web_Scraping)
+
+
 
 ## References
 
@@ -35,6 +38,26 @@ Mining data from about fpl managers, players performances and general game infor
 		- how do we access what the *Next Page* button provides?
 		- is there another league ID which returns a league JSON which includes the information about all/top 100k managers?
 
-## Authentification & Issues
+## Web Scraping
 
-To be able to access individual manager selections, it looks like you first need to authenticate
+There does not appear to be a way to download and store information about FPL manager's team choices at a gameweek by gameweek level.
+
+Information such as:
+
+- team selection
+	- total 15 players:
+		* 2 goalkeepers
+		* 5 defenders
+		* 5 midfielders
+		* 3 attackers
+- token usage
+	- *single* use token choices:
+		* triple captain (captain score multiplier x3 instead of x2)
+		* bench boost (benched players contribute to gameweek points)
+		* free hit (vaild for single gameweek, ability to change entire lineup)
+		* wildcard (free transfer, available *twice*, once in both season halves)
+- player transfers
+	- this can be determined by comparing previous gameweek choice with succeeding gameweek team
+
+... can be obtained and used to extract patterns of play
+
